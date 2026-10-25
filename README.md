@@ -6,7 +6,7 @@ A local-first starter for generating structured Mandarin learning lessons. The N
 
 The target machine is an Alienware 17 R4 with a GTX 1070 (8 GB VRAM), 16 GB system RAM, and Windows 10 64-bit. Start with `qwen3:4b` for comfortable memory headroom. If it runs well and enough system memory is free, try `qwen3:8b`; choose a smaller context (the app requests 4K) and close memory-heavy apps. A 14B model is a poor fit for this machine. Model tags and hardware support can change; check the current Ollama library before downloading.
 
-Image generation is more demanding. Begin with the FP16 Stable Diffusion 1.5 checkpoint in ComfyUI at 512×512, batch size 1. SDXL is likely to be slow and tight on 8 GB VRAM. Avoid assuming FLUX will fit comfortably. Run text or image generation one at a time, and keep Windows/browser memory use low. The app submits a basic SD 1.5 workflow to ComfyUI, polls job history, and displays the generated image.
+Image generation is more demanding. Use the SD 1.5 DreamShaper 8 checkpoint in ComfyUI at 512×512, batch size 1. It is a community fine-tune aimed at artistic images; it should give the storybook scenes a stronger visual style than the plain base checkpoint. SDXL is likely to be slow and tight on 8 GB VRAM. Avoid assuming FLUX will fit comfortably. Run text or image generation one at a time, and keep Windows/browser memory use low. The app submits a storybook-style SD 1.5 workflow to ComfyUI, polls job history, and displays the generated image.
 
 ## Requirements
 
@@ -33,8 +33,8 @@ Image generation is more demanding. Begin with the FP16 Stable Diffusion 1.5 che
 To enable image generation:
 
 1. Download ComfyUI's [NVIDIA CUDA 12.6 portable build](https://github.com/comfyanonymous/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia_cu126.7z) for GTX 10-series and older cards; the standard current portable build targets newer cards. Extract it and start ComfyUI.
-2. Download the FP16 checkpoint from [Comfy-Org's Stable Diffusion 1.5 model](https://huggingface.co/Comfy-Org/stable-diffusion-1.5/resolve/main/v1-5-pruned-emaonly-fp16.safetensors) and put it in `ComfyUI\models\checkpoints`.
-3. Set `COMFYUI_CHECKPOINT` in `.env.local` to its exact filename (default `v1-5-pruned-emaonly-fp16.safetensors`). Set `COMFYUI_BASE_URL` only if ComfyUI uses a different local address, then restart Next.js.
+2. Download [DreamShaper 8](https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors) and put it in `ComfyUI\models\checkpoints`. This SD 1.5 fine-tune is about 2.13 GB. Review the [model license](https://huggingface.co/Lykon/dreamshaper-8) before commercial use.
+3. Set `COMFYUI_CHECKPOINT` in `.env.local` to the exact checkpoint filename (default `DreamShaper_8_pruned.safetensors`). Set `COMFYUI_BASE_URL` only if ComfyUI uses a different local address, then restart ComfyUI and Next.js.
 
 The app uses ComfyUI's local `/prompt`, `/history`, and `/view` endpoints. Never expose either local service directly to the public internet. See the [ComfyUI server API documentation](https://docs.comfy.org/development/comfyui-server/comms_routes) for its local queue and image routes.
 
@@ -63,7 +63,7 @@ Returns `{ "lesson": { title, summary, vocabulary, dialogue, exercises, imagePro
 | `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Local Ollama API |
 | `OLLAMA_MODEL` | `qwen3:4b` | Installed Ollama model tag |
 | `COMFYUI_BASE_URL` | `http://127.0.0.1:8188` | Local ComfyUI server |
-| `COMFYUI_CHECKPOINT` | `v1-5-pruned-emaonly-fp16.safetensors` | Checkpoint filename in ComfyUI's checkpoints folder |
+| `COMFYUI_CHECKPOINT` | `DreamShaper_8_pruned.safetensors` | Checkpoint filename in ComfyUI's checkpoints folder |
 
 ## Troubleshooting
 
