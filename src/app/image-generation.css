@@ -1,0 +1,4 @@
+.imageButton{background:var(--green);color:white;border:0;border-radius:7px;padding:10px 14px;font:600 12px 'DM Sans';cursor:pointer}
+.imageButton:disabled{opacity:.65;cursor:wait}
+.imageError{color:var(--red)}
+.sceneImage{display:block;width:min(100%,512px);height:auto;margin-top:14px;border-radius:10px;border:1px solid var(--line)}
